@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;  // Per leggere i file
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Open_data
@@ -9,20 +10,21 @@ namespace Open_data
     {
         private List<giocatore> listGiocatori;
         private string fileName = "Elenco.csv"; // Il path del file caricato
+        private bool isNazionalitaAscending = true; // Variabile per controllare l'ordinamento della nazionalità
+        private bool isPosizioneAscending = true; // Variabile per controllare l'ordinamento della posizione
+        private bool isSquadraAscending = true; // Variabile per controllare l'ordinamento della squadra
+        private bool isCampionatoAscending = true; // Variabile per controllare l'ordinamento del campionato
 
         public Form1()
         {
             InitializeComponent();
+            listView1.ColumnClick += listView1_ColumnClick; // Associa l'evento
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             listGiocatori = new List<giocatore>();
-
-            // Carica i dati dal file CSV nella lista di giocatori
             CaricaGiocatoriDaCSV();
-
-            // Popola la ListView1 con i dati
             CaricaGiocatorinellalistview();
         }
 
@@ -30,42 +32,36 @@ namespace Open_data
         {
             try
             {
-                // Apri il file CSV
                 using (StreamReader sr = new StreamReader(fileName))
                 {
                     string line;
-                    bool isFirstLine = true; // Per saltare l'intestazione
+                    bool isFirstLine = true;
 
-                    // Leggi ogni riga del file
                     while ((line = sr.ReadLine()) != null)
                     {
                         if (isFirstLine)
                         {
-                            isFirstLine = false; // Salta la prima riga
+                            isFirstLine = false;
                             continue;
                         }
 
-                        // Dividi la riga nei campi separati da virgola
                         string[] fields = line.Split(';');
-
-                        // Assumi che il file CSV sia formattato correttamente
                         giocatore g = new giocatore(
-                            int.Parse(fields[0]), // Numero elenco
-                            fields[1],             // Nome giocatore
-                            fields[2],             // Nazionalità
-                            fields[3],             // Posizione
-                            fields[4],             // Squadra
-                            fields[5],             // Campionato
-                            int.Parse(fields[6]),  // Età
-                            int.Parse(fields[7]),  // Anno di nascita
-                            int.Parse(fields[8]),  // Partite giocate
-                            int.Parse(fields[9]),  // Partite giocate da titolare
-                            int.Parse(fields[10]), // Minuti giocati
-                            double.Parse(fields[11]), // Minuti su 90
-                            int.Parse(fields[12])  // Gol
+                            int.Parse(fields[0]),
+                            fields[1],
+                            fields[2],
+                            fields[3],
+                            fields[4],
+                            fields[5],
+                            int.Parse(fields[6]),
+                            int.Parse(fields[7]),
+                            int.Parse(fields[8]),
+                            int.Parse(fields[9]),
+                            int.Parse(fields[10]),
+                            double.Parse(fields[11]),
+                            int.Parse(fields[12])
                         );
 
-                        // Aggiungi il giocatore alla lista
                         listGiocatori.Add(g);
                     }
                 }
@@ -78,8 +74,8 @@ namespace Open_data
 
         private void CaricaGiocatorinellalistview()
         {
-            // Configura le colonne della ListView1
             listView1.View = View.Details;
+            listView1.Columns.Clear(); // Azzera le colonne esistenti
             listView1.Columns.Add("Numero Elenco", 100);
             listView1.Columns.Add("Nome Giocatore", 150);
             listView1.Columns.Add("Nazionalità", 100);
@@ -93,8 +89,8 @@ namespace Open_data
             listView1.Columns.Add("Minuti Giocati", 120);
             listView1.Columns.Add("Minuti su 90", 100);
             listView1.Columns.Add("Gol", 50);
+            listView1.Items.Clear(); // Azzera gli item esistenti
 
-            // Aggiungi i giocatori alla ListView
             foreach (var giocatore in listGiocatori)
             {
                 ListViewItem item = new ListViewItem(giocatore.Numeroelenco.ToString());
@@ -115,9 +111,66 @@ namespace Open_data
             }
         }
 
+        private void listView1_ColumnClick(object sender, ColumnClickEventArgs ordinaeriordinacolonna)
+        {
+            if (ordinaeriordinacolonna.Column == 0) // Indice della colonna "Numero Elenco"
+            {
+                listGiocatori.Reverse(); // Inverti l'ordine
+            }
+            else if (ordinaeriordinacolonna.Column == 2) // Indice della colonna "Nazionalità"
+            {
+                if (isNazionalitaAscending)
+                {
+                    listGiocatori.Sort((x, y) => string.Compare(x.Nazionalita, y.Nazionalita));
+                }
+                else
+                {
+                    listGiocatori.Sort((x, y) => string.Compare(y.Nazionalita, x.Nazionalita));
+                }
+                isNazionalitaAscending = !isNazionalitaAscending; // Alterna lo stato
+            }
+            else if (ordinaeriordinacolonna.Column == 3) // Indice della colonna "Posizione"
+            {
+                if (isPosizioneAscending)
+                {
+                    listGiocatori.Sort((x, y) => string.Compare(x.Posizione, y.Posizione));
+                }
+                else
+                {
+                    listGiocatori.Sort((x, y) => string.Compare(y.Posizione, x.Posizione));
+                }
+                isPosizioneAscending = !isPosizioneAscending; // Alterna lo stato
+            }
+            else if (ordinaeriordinacolonna.Column == 4) // Indice della colonna "Squadra"
+            {
+                if (isSquadraAscending)
+                {
+                    listGiocatori.Sort((x, y) => string.Compare(x.Squadra, y.Squadra));
+                }
+                else
+                {
+                    listGiocatori.Sort((x, y) => string.Compare(y.Squadra, x.Squadra));
+                }
+                isSquadraAscending = !isSquadraAscending; // Alterna lo stato
+            }
+            else if (ordinaeriordinacolonna.Column == 5) // Indice della colonna "Campionato"
+            {
+                if (isCampionatoAscending)
+                {
+                    listGiocatori.Sort((x, y) => string.Compare(x.Campionato, y.Campionato));
+                }
+                else
+                {
+                    listGiocatori.Sort((x, y) => string.Compare(y.Campionato, x.Campionato));
+                }
+                isCampionatoAscending = !isCampionatoAscending; // Alterna lo stato
+            }
+
+            CaricaGiocatorinellalistview(); // Ricarica la ListView
+        }
+
         class giocatore
         {
-            // Campi della classe giocatore
             private int _numeroelenco;
             private string _nomegiocatore;
             private string _nazionalita;
@@ -175,6 +228,11 @@ namespace Open_data
             public int Minutigiocati { get; set; }
             public double Partitegiocatesunov { get; set; }
             public int Gol { get; set; }
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

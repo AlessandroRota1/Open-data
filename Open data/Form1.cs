@@ -9,11 +9,21 @@ namespace Open_data
     public partial class Form1 : Form
     {
         private List<giocatore> listGiocatori;
+        private List<giocatore> listGiocatoriOriginale; // Lista per memorizzare l'ordine originale
         private string fileName = "Elenco.csv"; // Il path del file caricato
-        private bool isNazionalitaAscending = true; // Variabile per controllare l'ordinamento della nazionalità
-        private bool isPosizioneAscending = true; // Variabile per controllare l'ordinamento della posizione
-        private bool isSquadraAscending = true; // Variabile per controllare l'ordinamento della squadra
-        private bool isCampionatoAscending = true; // Variabile per controllare l'ordinamento del campionato
+        private bool isNazionalitaAscending = true;
+        private bool isPosizioneAscending = true;
+        private bool isSquadraAscending = true;
+        private bool isCampionatoAscending = true;
+
+        // Aggiunta variabili per le nuove colonne
+        private bool isEtaAscending = true;
+        private bool isAnnoNascitaAscending = true;
+        private bool isPartiteGiocateAscending = true;
+        private bool isPartiteTitolareAscending = true;
+        private bool isMinutiGiocatiAscending = true;
+        private bool isMinutiSu90Ascending = true;
+        private bool isGolAscending = true;
 
         public Form1()
         {
@@ -24,6 +34,8 @@ namespace Open_data
         private void Form1_Load(object sender, EventArgs e)
         {
             listGiocatori = new List<giocatore>();
+            listGiocatoriOriginale = new List<giocatore>(); // Inizializza la lista per l'ordine originale
+
             CaricaGiocatoriDaCSV();
             CaricaGiocatorinellalistview();
         }
@@ -64,6 +76,9 @@ namespace Open_data
 
                         listGiocatori.Add(g);
                     }
+
+                    // Crea una copia della lista originale
+                    listGiocatoriOriginale = new List<giocatore>(listGiocatori);
                 }
             }
             catch (Exception ex)
@@ -127,7 +142,7 @@ namespace Open_data
                 {
                     listGiocatori.Sort((x, y) => string.Compare(y.Nazionalita, x.Nazionalita));
                 }
-                isNazionalitaAscending = !isNazionalitaAscending; // Alterna lo stato
+                isNazionalitaAscending = !isNazionalitaAscending;
             }
             else if (ordinaeriordinacolonna.Column == 3) // Indice della colonna "Posizione"
             {
@@ -139,7 +154,7 @@ namespace Open_data
                 {
                     listGiocatori.Sort((x, y) => string.Compare(y.Posizione, x.Posizione));
                 }
-                isPosizioneAscending = !isPosizioneAscending; // Alterna lo stato
+                isPosizioneAscending = !isPosizioneAscending;
             }
             else if (ordinaeriordinacolonna.Column == 4) // Indice della colonna "Squadra"
             {
@@ -151,7 +166,7 @@ namespace Open_data
                 {
                     listGiocatori.Sort((x, y) => string.Compare(y.Squadra, x.Squadra));
                 }
-                isSquadraAscending = !isSquadraAscending; // Alterna lo stato
+                isSquadraAscending = !isSquadraAscending;
             }
             else if (ordinaeriordinacolonna.Column == 5) // Indice della colonna "Campionato"
             {
@@ -163,76 +178,138 @@ namespace Open_data
                 {
                     listGiocatori.Sort((x, y) => string.Compare(y.Campionato, x.Campionato));
                 }
-                isCampionatoAscending = !isCampionatoAscending; // Alterna lo stato
+                isCampionatoAscending = !isCampionatoAscending;
             }
-
-            CaricaGiocatorinellalistview(); // Ricarica la ListView
-        }
-
-        class giocatore
-        {
-            private int _numeroelenco;
-            private string _nomegiocatore;
-            private string _nazionalita;
-            private string _posizione;
-            private string _squadra;
-            private string _campionato;
-            private int _eta;
-            private int _annodinascita;
-            private int _partitegiocate;
-            private int _partitegiocatetit;
-            private int _minutigiocati;
-            private double _partitegiocatesunov;
-            private int _gol;
-
-            public giocatore(
-                int numeroelenco,
-                string nomegiocatore,
-                string nazionalita,
-                string posizione,
-                string squadra,
-                string campionato,
-                int eta,
-                int annodinascita,
-                int partitegiocate,
-                int partitegiocatetit,
-                int minutigiocati,
-                double partitegiocatesunov,
-                int gol)
+            else if (ordinaeriordinacolonna.Column == 6) // Indice della colonna "Età"
             {
-                Numeroelenco = numeroelenco;
-                Nomegiocatore = nomegiocatore;
-                Nazionalita = nazionalita;
-                Posizione = posizione;
-                Squadra = squadra;
-                Campionato = campionato;
-                Eta = eta;
-                Annodinascita = annodinascita;
-                Partitegiocate = partitegiocate;
-                Partitegiocatetit = partitegiocatetit;
-                Minutigiocati = minutigiocati;
-                Partitegiocatesunov = partitegiocatesunov;
-                Gol = gol;
+                if (isEtaAscending)
+                {
+                    listGiocatori.Sort((x, y) => x.Eta.CompareTo(y.Eta));
+                }
+                else
+                {
+                    listGiocatori.Sort((x, y) => y.Eta.CompareTo(x.Eta));
+                }
+                isEtaAscending = !isEtaAscending;
+            }
+            else if (ordinaeriordinacolonna.Column == 7) // Indice della colonna "Anno di Nascita"
+            {
+                if (isAnnoNascitaAscending)
+                {
+                    listGiocatori.Sort((x, y) => x.Annodinascita.CompareTo(y.Annodinascita));
+                }
+                else
+                {
+                    listGiocatori.Sort((x, y) => y.Annodinascita.CompareTo(x.Annodinascita));
+                }
+                isAnnoNascitaAscending = !isAnnoNascitaAscending;
+            }
+            else if (ordinaeriordinacolonna.Column == 8) // Indice della colonna "Partite Giocate"
+            {
+                if (isPartiteGiocateAscending)
+                {
+                    listGiocatori.Sort((x, y) => x.Partitegiocate.CompareTo(y.Partitegiocate));
+                }
+                else
+                {
+                    listGiocatori.Sort((x, y) => y.Partitegiocate.CompareTo(x.Partitegiocate));
+                }
+                isPartiteGiocateAscending = !isPartiteGiocateAscending;
+            }
+            else if (ordinaeriordinacolonna.Column == 9) // Indice della colonna "Partite Titolare"
+            {
+                if (isPartiteTitolareAscending)
+                {
+                    listGiocatori.Sort((x, y) => x.Partitegiocatetit.CompareTo(y.Partitegiocatetit));
+                }
+                else
+                {
+                    listGiocatori.Sort((x, y) => y.Partitegiocatetit.CompareTo(x.Partitegiocatetit));
+                }
+                isPartiteTitolareAscending = !isPartiteTitolareAscending;
+            }
+            else if (ordinaeriordinacolonna.Column == 10) // Indice della colonna "Minuti Giocati"
+            {
+                if (isMinutiGiocatiAscending)
+                {
+                    listGiocatori.Sort((x, y) => x.Minutigiocati.CompareTo(y.Minutigiocati));
+                }
+                else
+                {
+                    listGiocatori.Sort((x, y) => y.Minutigiocati.CompareTo(x.Minutigiocati));
+                }
+                isMinutiGiocatiAscending = !isMinutiGiocatiAscending;
+            }
+            else if (ordinaeriordinacolonna.Column == 11) // Indice della colonna "Minuti su 90"
+            {
+                if (isMinutiSu90Ascending)
+                {
+                    listGiocatori.Sort((x, y) => x.Partitegiocatesunov.CompareTo(y.Partitegiocatesunov));
+                }
+                else
+                {
+                    listGiocatori.Sort((x, y) => y.Partitegiocatesunov.CompareTo(x.Partitegiocatesunov));
+                }
+                isMinutiSu90Ascending = !isMinutiSu90Ascending;
+            }
+            else if (ordinaeriordinacolonna.Column == 12) // Indice della colonna "Gol"
+            {
+                if (isGolAscending)
+                {
+                    listGiocatori.Sort((x, y) => x.Gol.CompareTo(y.Gol));
+                }
+                else
+                {
+                    listGiocatori.Sort((x, y) => y.Gol.CompareTo(x.Gol));
+                }
+                isGolAscending = !isGolAscending;
             }
 
-            public int Numeroelenco { get; set; }
-            public string Nomegiocatore { get; set; }
-            public string Nazionalita { get; set; }
-            public string Posizione { get; set; }
-            public string Squadra { get; set; }
-            public string Campionato { get; set; }
-            public int Eta { get; set; }
-            public int Annodinascita { get; set; }
-            public int Partitegiocate { get; set; }
-            public int Partitegiocatetit { get; set; }
-            public int Minutigiocati { get; set; }
-            public double Partitegiocatesunov { get; set; }
-            public int Gol { get; set; }
+            CaricaGiocatorinellalistview(); // Ricarica la ListView dopo aver ordinato
         }
 
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        // Aggiungi il seguente metodo per il click del button1:
+        private void button1_Click(object sender, EventArgs e)
         {
+            // Ripristina l'ordine originale dalla lista listGiocatoriOriginale
+            listGiocatori = new List<giocatore>(listGiocatoriOriginale);
 
+            // Ricarica la ListView con l'ordine originale
+            CaricaGiocatorinellalistview();
+        }
+    }
+
+    public class giocatore
+    {
+        public int Numeroelenco { get; set; }
+        public string Nomegiocatore { get; set; }
+        public string Nazionalita { get; set; }
+        public string Posizione { get; set; }
+        public string Squadra { get; set; }
+        public string Campionato { get; set; }
+        public int Eta { get; set; }
+        public int Annodinascita { get; set; }
+        public int Partitegiocate { get; set; }
+        public int Partitegiocatetit { get; set; }
+        public int Minutigiocati { get; set; }
+        public double Partitegiocatesunov { get; set; }
+        public int Gol { get; set; }
+
+        public giocatore(int numeroelenco, string nomegiocatore, string nazionalita, string posizione, string squadra, string campionato, int eta, int annodinascita, int partitegiocate, int partitegiocatetit, int minutigiocati, double partitegiocatesunov, int gol)
+        {
+            Numeroelenco = numeroelenco;
+            Nomegiocatore = nomegiocatore;
+            Nazionalita = nazionalita;
+            Posizione = posizione;
+            Squadra = squadra;
+            Campionato = campionato;
+            Eta = eta;
+            Annodinascita = annodinascita;
+            Partitegiocate = partitegiocate;
+            Partitegiocatetit = partitegiocatetit;
+            Minutigiocati = minutigiocati;
+            Partitegiocatesunov = partitegiocatesunov;
+            Gol = gol;
         }
     }
 }

@@ -25,6 +25,10 @@ namespace Open_data
         private bool isMinutiSu90Ascending = true;
         private bool isGolAscending = true;
 
+        // Aggiunta variabili per "Numero Elenco" e "Nome Giocatore"
+        private bool isNumeroElencoAscending = true;
+        private bool isNomeGiocatoreAscending = true;
+
         public Form1()
         {
             InitializeComponent();
@@ -130,7 +134,27 @@ namespace Open_data
         {
             if (ordinaeriordinacolonna.Column == 0) // Indice della colonna "Numero Elenco"
             {
-                listGiocatori.Reverse(); // Inverti l'ordine
+                if (isNumeroElencoAscending)
+                {
+                    listGiocatori.Sort((x, y) => x.Numeroelenco.CompareTo(y.Numeroelenco));
+                }
+                else
+                {
+                    listGiocatori.Sort((x, y) => y.Numeroelenco.CompareTo(x.Numeroelenco));
+                }
+                isNumeroElencoAscending = !isNumeroElencoAscending;
+            }
+            else if (ordinaeriordinacolonna.Column == 1) // Indice della colonna "Nome Giocatore"
+            {
+                if (isNomeGiocatoreAscending)
+                {
+                    listGiocatori.Sort((x, y) => string.Compare(x.Nomegiocatore, y.Nomegiocatore));
+                }
+                else
+                {
+                    listGiocatori.Sort((x, y) => string.Compare(y.Nomegiocatore, x.Nomegiocatore));
+                }
+                isNomeGiocatoreAscending = !isNomeGiocatoreAscending;
             }
             else if (ordinaeriordinacolonna.Column == 2) // Indice della colonna "Nazionalità"
             {
@@ -265,21 +289,22 @@ namespace Open_data
                 isGolAscending = !isGolAscending;
             }
 
-            CaricaGiocatorinellalistview(); // Ricarica la ListView dopo aver ordinato
+            CaricaGiocatorinellalistview();
         }
 
-        // Aggiungi il seguente metodo per il click del button1:
         private void button1_Click(object sender, EventArgs e)
         {
-            // Ripristina l'ordine originale dalla lista listGiocatoriOriginale
-            listGiocatori = new List<giocatore>(listGiocatoriOriginale);
+            // Ordina i giocatori in base al Numeroelenco in maniera crescente
+            listGiocatori.Sort((x, y) => x.Numeroelenco.CompareTo(y.Numeroelenco));
 
-            // Ricarica la ListView con l'ordine originale
+            // Ricarica la ListView con l'ordine per Numeroelenco crescente
             CaricaGiocatorinellalistview();
         }
     }
+}
 
-    public class giocatore
+
+public class giocatore
     {
         public int Numeroelenco { get; set; }
         public string Nomegiocatore { get; set; }
@@ -312,4 +337,4 @@ namespace Open_data
             Gol = gol;
         }
     }
-}
+

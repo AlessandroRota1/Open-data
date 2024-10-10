@@ -300,6 +300,45 @@ namespace Open_data
             // Ricarica la ListView con l'ordine per Numeroelenco crescente
             CaricaGiocatorinellalistview();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string nomeGiocatoreDaCercare = textBox1.Text;
+
+            if (nomeGiocatoreDaCercare=="")
+            {
+                MessageBox.Show("Inserisci il nome di un giocatore.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Cerca il giocatore nella lista in base al nome
+            giocatore giocatoreTrovato = listGiocatori.FirstOrDefault(g => g.Nomegiocatore.Equals(nomeGiocatoreDaCercare, StringComparison.OrdinalIgnoreCase));
+
+            if (giocatoreTrovato != null)
+            {
+                // Crea una stringa con le informazioni del giocatore
+                string infoGiocatore = $"Nome: {giocatoreTrovato.Nomegiocatore}\n" +
+                                       $"Nazionalità: {giocatoreTrovato.Nazionalita}\n" +
+                                       $"Posizione: {giocatoreTrovato.Posizione}\n" +
+                                       $"Squadra: {giocatoreTrovato.Squadra}\n" +
+                                       $"Campionato: {giocatoreTrovato.Campionato}\n" +
+                                       $"Età: {giocatoreTrovato.Eta}\n" +
+                                       $"Anno di Nascita: {giocatoreTrovato.Annodinascita}\n" +
+                                       $"Partite Giocate: {giocatoreTrovato.Partitegiocate}\n" +
+                                       $"Partite Titolare: {giocatoreTrovato.Partitegiocatetit}\n" +
+                                       $"Minuti Giocati: {giocatoreTrovato.Minutigiocati}\n" +
+                                       $"Minuti su 90: {giocatoreTrovato.Partitegiocatesunov}\n" +
+                                       $"Gol: {giocatoreTrovato.Gol}";
+
+                // Mostra il messaggio
+                MessageBox.Show(infoGiocatore, "Dettagli Giocatore", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Giocatore non trovato.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+        }
     }
 }
 

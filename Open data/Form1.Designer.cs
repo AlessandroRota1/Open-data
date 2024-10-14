@@ -33,6 +33,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.button3 = new System.Windows.Forms.Button();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // listView1
@@ -76,15 +79,44 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(91, 36);
             this.button2.TabIndex = 4;
-            this.button2.Text = "Ripristina:";
+            this.button2.Text = "Ricerca:";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(992, 262);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(149, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Inserisci numero minimo di gol:";
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(1203, 269);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(91, 36);
+            this.button3.TabIndex = 6;
+            this.button3.Text = "Ricerca:";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(995, 278);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(100, 20);
+            this.textBox2.TabIndex = 7;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1333, 668);
+            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
@@ -105,6 +137,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }
 

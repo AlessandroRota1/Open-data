@@ -339,6 +339,55 @@ namespace Open_data
             }
 
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            // Controlla se l'input è vuoto
+            if (textBox2.Text=="")
+            {
+                MessageBox.Show("Inserisci un numero valido di gol.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Prova a convertire il valore della TextBox in un numero
+            if (!int.TryParse(textBox2.Text, out int golMinimi))
+            {
+                MessageBox.Show("Inserisci un numero intero valido.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Filtra i giocatori con un numero di gol maggiore del valore inserito
+            var giocatoriFiltrati = listGiocatori.Where(g => g.Gol >= golMinimi).ToList();
+
+            // Controlla se sono stati trovati giocatori che soddisfano i criteri
+            if (giocatoriFiltrati.Count == 0)
+            {
+                MessageBox.Show("Nessun giocatore trovato con un numero di gol maggiore di " + golMinimi, "Risultato", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Aggiorna la ListView con i giocatori filtrati
+            listView1.Items.Clear();
+            foreach (var giocatore in giocatoriFiltrati)
+            {
+                ListViewItem item = new ListViewItem(giocatore.Numeroelenco.ToString());
+                item.SubItems.Add(giocatore.Nomegiocatore);
+                item.SubItems.Add(giocatore.Nazionalita);
+                item.SubItems.Add(giocatore.Posizione);
+                item.SubItems.Add(giocatore.Squadra);
+                item.SubItems.Add(giocatore.Campionato);
+                item.SubItems.Add(giocatore.Eta.ToString());
+                item.SubItems.Add(giocatore.Annodinascita.ToString());
+                item.SubItems.Add(giocatore.Partitegiocate.ToString());
+                item.SubItems.Add(giocatore.Partitegiocatetit.ToString());
+                item.SubItems.Add(giocatore.Minutigiocati.ToString());
+                item.SubItems.Add(giocatore.Partitegiocatesunov.ToString());
+                item.SubItems.Add(giocatore.Gol.ToString());
+
+                listView1.Items.Add(item);
+            }
+
+        }
     }
 }
 

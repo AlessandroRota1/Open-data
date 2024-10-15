@@ -42,6 +42,21 @@ namespace Open_data
 
             CaricaGiocatoriDaCSV();
             CaricaGiocatorinellalistview();
+            PopolaComboBoxNazionalita();
+        }
+        private void PopolaComboBoxNazionalita()
+        {
+            // Estrai tutte le nazionalità dalla lista dei giocatori
+            var nazionalita = listGiocatori.Select(g => g.Nazionalita).Distinct().OrderBy(n => n).ToList();
+
+            // Aggiungi un'opzione "Tutte" per visualizzare tutti i giocatori
+            comboBox1.Items.Add("Tutte");
+
+            // Aggiungi tutte le nazionalità alla ComboBox
+            comboBox1.Items.AddRange(nazionalita.ToArray());
+
+            // Seleziona "Tutte" di default
+            comboBox1.SelectedIndex = 0;
         }
 
         private void CaricaGiocatoriDaCSV()
@@ -364,6 +379,48 @@ namespace Open_data
             {
                 MessageBox.Show("Nessun giocatore trovato con un numero di gol maggiore di " + golMinimi, "Risultato", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
+            }
+
+            // Aggiorna la ListView con i giocatori filtrati
+            listView1.Items.Clear();
+            foreach (var giocatore in giocatoriFiltrati)
+            {
+                ListViewItem item = new ListViewItem(giocatore.Numeroelenco.ToString());
+                item.SubItems.Add(giocatore.Nomegiocatore);
+                item.SubItems.Add(giocatore.Nazionalita);
+                item.SubItems.Add(giocatore.Posizione);
+                item.SubItems.Add(giocatore.Squadra);
+                item.SubItems.Add(giocatore.Campionato);
+                item.SubItems.Add(giocatore.Eta.ToString());
+                item.SubItems.Add(giocatore.Annodinascita.ToString());
+                item.SubItems.Add(giocatore.Partitegiocate.ToString());
+                item.SubItems.Add(giocatore.Partitegiocatetit.ToString());
+                item.SubItems.Add(giocatore.Minutigiocati.ToString());
+                item.SubItems.Add(giocatore.Partitegiocatesunov.ToString());
+                item.SubItems.Add(giocatore.Gol.ToString());
+
+                listView1.Items.Add(item);
+            }
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            // Prendi la nazionalità selezionata nella ComboBox
+            string nazionalitaSelezionata = comboBox1.SelectedItem.ToString();
+
+            // Filtra i giocatori in base alla nazionalità
+            List<giocatore> giocatoriFiltrati;
+
+            if (nazionalitaSelezionata == "Tutte")
+            {
+                // Se è selezionata l'opzione "Tutte", mostra tutti i giocatori
+                giocatoriFiltrati = listGiocatori;
+            }
+            else
+            {
+                // Filtra i giocatori per la nazionalità selezionata
+                giocatoriFiltrati = listGiocatori.Where(g => g.Nazionalita == nazionalitaSelezionata).ToList();
             }
 
             // Aggiorna la ListView con i giocatori filtrati

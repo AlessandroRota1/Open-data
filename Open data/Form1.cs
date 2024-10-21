@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Open_data
 {
@@ -11,6 +12,8 @@ namespace Open_data
         private List<giocatore> listGiocatori;
         private List<giocatore> listGiocatoriOriginale; // Lista per memorizzare l'ordine originale
         private string fileName = "Elenco.csv"; // Il path del file caricato
+        private string fileNazioni = "Elenco nazioni.csv"; // Il path del file caricato
+
         private bool isNazionalitaAscending = true;
         private bool isPosizioneAscending = true;
         private bool isSquadraAscending = true;
@@ -33,6 +36,8 @@ namespace Open_data
         {
             InitializeComponent();
             listView1.ColumnClick += listView1_ColumnClick; // Associa l'evento
+            listView1.ItemActivate += ListView1_ItemActivate;
+            listView1.FullRowSelect = true;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -45,6 +50,30 @@ namespace Open_data
             PopolaComboBoxNazionalita();
             PopolaComboBoxCampionato();
         }
+        private void ListView1_ItemActivate(object sender, EventArgs e)
+        {
+            // Verifica se c'è un elemento selezionato
+            if (listView1.SelectedItems.Count > 0)
+            {
+                // Ottieni l'elemento selezionato
+                var selectedItem = listView1.SelectedItems[0];
+
+                // Il nome del giocatore è nella seconda colonna (indice 1)
+                string playerName = selectedItem.SubItems[1].Text;
+
+                // Costruisci l'URL per la pagina Wikipedia del giocatore
+                string wikipediaUrl = $"https://en.wikipedia.org/wiki/{playerName.Replace(" ", "_")}";
+
+                // Usa Process.Start per aprire l'URL nel browser predefinito
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = wikipediaUrl,
+                    UseShellExecute = true // Necessario per aprire l'URL nel browser predefinito
+                });
+            }
+        }
+
+
         private void PopolaComboBoxNazionalita()
         {
             // Estrai tutte le nazionalità dalla lista dei giocatori
@@ -501,6 +530,11 @@ namespace Open_data
 
                 listView1.Items.Add(item);
             }
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

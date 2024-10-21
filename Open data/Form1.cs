@@ -49,6 +49,7 @@ namespace Open_data
             CaricaGiocatorinellalistview();
             PopolaComboBoxNazionalita();
             PopolaComboBoxCampionato();
+            PopolaComboBoxSquadre(comboBox2.Text);
         }
         private void ListView1_ItemActivate(object sender, EventArgs e)
         {
@@ -88,6 +89,29 @@ namespace Open_data
             // Seleziona "Tutte" di default
             comboBox1.SelectedIndex = 0;
         }
+        private void PopolaComboBoxSquadre(string campionatoSelezionato)
+        {
+            // Estrai tutte le squadre dal campionato selezionato
+            var squadre = listGiocatori
+                .Where(g => g.Campionato == campionatoSelezionato) // Filtra per campionato
+                .Select(g => g.Squadra)
+                .Distinct()
+                .OrderBy(s => s)
+                .ToList();
+
+            // Pulisci il ComboBox prima di aggiungere nuovi elementi
+            comboBox3.Items.Clear();
+
+            // Aggiungi un'opzione "Tutte" per visualizzare tutti i giocatori
+            comboBox3.Items.Add("Tutte");
+
+            // Aggiungi tutte le squadre alla ComboBox
+            comboBox3.Items.AddRange(squadre.ToArray());
+
+            // Seleziona "Tutte" di default
+            comboBox3.SelectedIndex = 0;
+        }
+
 
         private void PopolaComboBoxCampionato()
         {
@@ -535,6 +559,61 @@ namespace Open_data
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            // Prendi la squadra selezionata nella ComboBox
+            string squadraSelezionata = comboBox3.SelectedItem.ToString();
+            string campionatoSelezionato = comboBox2.SelectedItem.ToString();
+            // Filtra i giocatori in base alla squadra e al campionato
+            List<giocatore> giocatoriFiltrati;
+
+            if (squadraSelezionata == "Tutte")
+            {
+                // Se è selezionata l'opzione "Tutte", mostra tutti i giocatori del campionato selezionato
+                giocatoriFiltrati = listGiocatori.Where(g => g.Campionato == campionatoSelezionato).ToList();
+            }
+            else
+            {
+                // Filtra i giocatori per la squadra e il campionato selezionato
+                giocatoriFiltrati = listGiocatori
+                    .Where(g => g.Squadra == squadraSelezionata && g.Campionato == campionatoSelezionato)
+                    .ToList();
+            }
+
+            // Aggiorna la ListView con i giocatori filtrati
+            listView1.Items.Clear();
+            foreach (var giocatore in giocatoriFiltrati)
+            {
+                ListViewItem item = new ListViewItem(giocatore.Numeroelenco.ToString());
+                item.SubItems.Add(giocatore.Nomegiocatore);
+                item.SubItems.Add(giocatore.Nazionalita);
+                item.SubItems.Add(giocatore.Posizione);
+                item.SubItems.Add(giocatore.Squadra);
+                item.SubItems.Add(giocatore.Campionato);
+                item.SubItems.Add(giocatore.Eta.ToString());
+                item.SubItems.Add(giocatore.Annodinascita.ToString());
+                item.SubItems.Add(giocatore.Partitegiocate.ToString());
+                item.SubItems.Add(giocatore.Partitegiocatetit.ToString());
+                item.SubItems.Add(giocatore.Minutigiocati.ToString());
+                item.SubItems.Add(giocatore.Partitegiocatesunov.ToString());
+                item.SubItems.Add(giocatore.Gol.ToString());
+
+                listView1.Items.Add(item);
+            }
+
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string campionatoSelezionato = comboBox2.SelectedItem.ToString();
+            PopolaComboBoxSquadre(campionatoSelezionato);
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string campionatoSelezionato = comboBox2.SelectedItem.ToString(); 
         }
     }
 }

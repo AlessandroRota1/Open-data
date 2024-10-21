@@ -43,6 +43,7 @@ namespace Open_data
             CaricaGiocatoriDaCSV();
             CaricaGiocatorinellalistview();
             PopolaComboBoxNazionalita();
+            PopolaComboBoxCampionato();
         }
         private void PopolaComboBoxNazionalita()
         {
@@ -57,6 +58,21 @@ namespace Open_data
 
             // Seleziona "Tutte" di default
             comboBox1.SelectedIndex = 0;
+        }
+
+        private void PopolaComboBoxCampionato()
+        {
+            // Estrai tutti i campionati distinti dalla lista dei giocatori
+            var campionati = listGiocatori.Select(g => g.Campionato).Distinct().OrderBy(c => c).ToList();
+
+            // Aggiungi un'opzione "Tutti" per visualizzare tutti i giocatori
+            comboBox2.Items.Add("Tutti");
+
+            // Aggiungi tutti i campionati alla ComboBox
+            comboBox2.Items.AddRange(campionati.ToArray());
+
+            // Seleziona "Tutti" di default
+            comboBox2.SelectedIndex = 0;
         }
 
         private void CaricaGiocatoriDaCSV()
@@ -444,6 +460,47 @@ namespace Open_data
                 listView1.Items.Add(item);
             }
 
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            // Prendi il campionato selezionato nella ComboBox2
+            string campionatoSelezionato = comboBox2.SelectedItem.ToString();
+
+            // Filtra i giocatori in base al campionato
+            List<giocatore> giocatoriFiltrati;
+
+            if (campionatoSelezionato == "Tutti")
+            {
+                // Se è selezionata l'opzione "Tutti", mostra tutti i giocatori
+                giocatoriFiltrati = listGiocatori;
+            }
+            else
+            {
+                // Filtra i giocatori per il campionato selezionato
+                giocatoriFiltrati = listGiocatori.Where(g => g.Campionato == campionatoSelezionato).ToList();
+            }
+
+            // Aggiorna la ListView con i giocatori filtrati
+            listView1.Items.Clear();
+            foreach (var giocatore in giocatoriFiltrati)
+            {
+                ListViewItem item = new ListViewItem(giocatore.Numeroelenco.ToString());
+                item.SubItems.Add(giocatore.Nomegiocatore);
+                item.SubItems.Add(giocatore.Nazionalita);
+                item.SubItems.Add(giocatore.Posizione);
+                item.SubItems.Add(giocatore.Squadra);
+                item.SubItems.Add(giocatore.Campionato);
+                item.SubItems.Add(giocatore.Eta.ToString());
+                item.SubItems.Add(giocatore.Annodinascita.ToString());
+                item.SubItems.Add(giocatore.Partitegiocate.ToString());
+                item.SubItems.Add(giocatore.Partitegiocatetit.ToString());
+                item.SubItems.Add(giocatore.Minutigiocati.ToString());
+                item.SubItems.Add(giocatore.Partitegiocatesunov.ToString());
+                item.SubItems.Add(giocatore.Gol.ToString());
+
+                listView1.Items.Add(item);
+            }
         }
     }
 }

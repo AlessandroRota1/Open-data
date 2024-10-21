@@ -39,6 +39,12 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.button5 = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.button6 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listView1
@@ -139,11 +145,70 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(995, 424);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(128, 21);
+            this.comboBox2.TabIndex = 11;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(992, 408);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(108, 13);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Filtra per campionato:";
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(1203, 408);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(91, 36);
+            this.button5.TabIndex = 13;
+            this.button5.Text = "Filtra:";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(992, 476);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(91, 13);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "Filtra per squadra:";
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(995, 492);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(128, 21);
+            this.comboBox3.TabIndex = 15;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(1203, 476);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(91, 36);
+            this.button6.TabIndex = 16;
+            this.button6.Text = "Filtra:";
+            this.button6.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1333, 668);
+            this.Controls.Add(this.button6);
+            this.Controls.Add(this.comboBox3);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.button5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.comboBox1);
@@ -176,6 +241,12 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.Button button6;
     }
 }
 

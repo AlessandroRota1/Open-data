@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Drawing;
 
 namespace Open_data
 {
@@ -13,6 +14,7 @@ namespace Open_data
         private List<giocatore> listGiocatoriOriginale; // Lista per memorizzare l'ordine originale
         private string fileName = "Elenco.csv"; // Il path del file caricato
         private string fileNazioni = "Elenco nazioni.csv"; // Il path del file caricato
+        private List<nazionalita> listNazionalita;
 
         private bool isNazionalitaAscending = true;
         private bool isPosizioneAscending = true;
@@ -44,8 +46,10 @@ namespace Open_data
         {
             listGiocatori = new List<giocatore>();
             listGiocatoriOriginale = new List<giocatore>(); // Inizializza la lista per l'ordine originale
+            listNazionalita = new List<nazionalita>();
 
             CaricaGiocatoriDaCSV();
+            CaricaNazioniDaCSV();
             CaricaGiocatorinellalistview();
             PopolaComboBoxNazionalita();
             PopolaComboBoxCampionato();
@@ -174,6 +178,48 @@ namespace Open_data
                 MessageBox.Show("Errore nella lettura del file CSV: " + ex.Message);
             }
         }
+        private void CaricaNazioniDaCSV()
+        {
+            try
+            {
+                using (StreamReader sr = new StreamReader(fileNazioni))
+                {
+                    string line;
+                    bool isFirstLine = true;
+
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        if (isFirstLine)
+                        {
+                            isFirstLine = false;
+                            continue;
+                        }
+
+                        string[] fields = line.Split(';');
+
+                        // Verifica che ci siano almeno due campi
+                        if (fields.Length >= 2)
+                        {
+                            nazionalita n = new nazionalita(
+                                fields[0],
+                                fields[1]
+                            );
+                            listNazionalita.Add(n);
+                        }
+                        else
+                        {
+                            // Opzionale: registrare o visualizzare un avviso per le righe incomplete
+                            Console.WriteLine($"Riga incompleta ignorata: {line}");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Errore nella lettura del file CSV: " + ex.Message);
+            }
+        }
+
 
         private void CaricaGiocatorinellalistview()
         {
@@ -615,6 +661,31 @@ namespace Open_data
         {
             string campionatoSelezionato = comboBox2.SelectedItem.ToString(); 
         }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string abbtre=comboBox1.SelectedItem.ToString();
+            string abbdue="";
+            foreach (var nazionalita in listNazionalita)
+            {
+                if (abbtre==nazionalita.Abbreviazionetre)
+                {
+                    abbdue=nazionalita.Abbreviazionedue;
+                }
+            }
+            nazionalita selectedNazionalita = new nazionalita(abbtre,abbdue);
+            string percorsoBandiera = $"{selectedNazionalita.PercorsoBandiera()}"; // Assicurati di avere l'immagine nella directory corretta
+
+            try
+            {
+                // Carica l'immagine nella PictureBox
+                pictureBox1.Image = Image.FromFile(percorsoBandiera);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Errore nel caricamento dell'immagine: {ex.Message}");
+            }
+        }
     }
 }
 
@@ -652,4 +723,20 @@ public class giocatore
             Gol = gol;
         }
     }
+        public class nazionalita
+        {
+            public string Abbreviazionetre { get; set; }
+            public string Abbreviazionedue { get; set; }
+                public nazionalita(string abbreviazionetre, string abbreviazionedue)
+                {
+                    Abbreviazionetre = abbreviazionetre;
+                    Abbreviazionedue= abbreviazionedue;
+                }
+        public string PercorsoBandiera()
+        {
+            return $"{Abbreviazionedue.ToLower()}.png"; 
+        }
+
+}
+
 

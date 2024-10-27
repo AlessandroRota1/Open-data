@@ -28,6 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.listView1 = new System.Windows.Forms.ListView();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -46,7 +49,15 @@
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.button6 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.chartConfrontoGiocatori = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.button7 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartConfrontoGiocatori)).BeginInit();
             this.SuspendLayout();
             // 
             // listView1
@@ -61,9 +72,10 @@
             // 
             // button1
             // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.4F);
             this.button1.Location = new System.Drawing.Point(995, 40);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(145, 115);
+            this.button1.Size = new System.Drawing.Size(299, 115);
             this.button1.TabIndex = 1;
             this.button1.Text = "Ripristina:";
             this.button1.UseVisualStyleBackColor = true;
@@ -214,11 +226,86 @@
             this.pictureBox1.TabIndex = 17;
             this.pictureBox1.TabStop = false;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(283, 9);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(453, 18);
+            this.label6.TabIndex = 18;
+            this.label6.Text = "Elenco giocatori top 5 campionati europei - Annata 2021/22";
+            // 
+            // chartConfrontoGiocatori
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.chartConfrontoGiocatori.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chartConfrontoGiocatori.Legends.Add(legend1);
+            this.chartConfrontoGiocatori.Location = new System.Drawing.Point(1300, 262);
+            this.chartConfrontoGiocatori.Name = "chartConfrontoGiocatori";
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chartConfrontoGiocatori.Series.Add(series1);
+            this.chartConfrontoGiocatori.Size = new System.Drawing.Size(372, 259);
+            this.chartConfrontoGiocatori.TabIndex = 19;
+            this.chartConfrontoGiocatori.Text = "chart1";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(995, 552);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(100, 20);
+            this.textBox3.TabIndex = 20;
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(995, 610);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(100, 20);
+            this.textBox4.TabIndex = 21;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(992, 536);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(268, 13);
+            this.label7.TabIndex = 22;
+            this.label7.Text = "Inserisci numero elenco primo giocatore da confrontare:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(992, 594);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(284, 13);
+            this.label8.TabIndex = 23;
+            this.label8.Text = "Inserisci numero elenco secondo giocatore da confrontare:";
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(1310, 539);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(106, 90);
+            this.button7.TabIndex = 24;
+            this.button7.Text = "Confronta:";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1333, 668);
+            this.ClientSize = new System.Drawing.Size(1684, 661);
+            this.Controls.Add(this.button7);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.textBox4);
+            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.chartConfrontoGiocatori);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.comboBox3);
@@ -238,9 +325,10 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.listView1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Elenco giocatori top 5 campionati europei - Annata 2021/22";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chartConfrontoGiocatori)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -266,6 +354,13 @@
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartConfrontoGiocatori;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button button7;
     }
 }
 

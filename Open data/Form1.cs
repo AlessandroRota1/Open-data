@@ -5,6 +5,8 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Drawing;
+using System.Text;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Open_data
 {
@@ -39,6 +41,7 @@ namespace Open_data
             listView1.ColumnClick += listView1_ColumnClick; // Associa l'evento
             listView1.ItemActivate += ListView1_ItemActivate;
             listView1.FullRowSelect = true;
+            chartConfrontoGiocatori.Visible = false;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -136,7 +139,7 @@ namespace Open_data
         {
             try
             {
-                using (StreamReader sr = new StreamReader(fileName))
+                using (StreamReader sr = new StreamReader(fileName, Encoding.UTF8))
                 {
                     string line;
                     bool isFirstLine = true;
@@ -304,6 +307,52 @@ namespace Open_data
                 listView1.Items.Add(item);
             }
         }
+        public void ConfrontaGiocatori(int numeroElencoGiocatore1, int numeroElencoGiocatore2)
+        {
+            // Trova i giocatori in base ai numeri di elenco forniti
+            var giocatore1 = listGiocatori.FirstOrDefault(g => g.Numeroelenco == numeroElencoGiocatore1);
+            var giocatore2 = listGiocatori.FirstOrDefault(g => g.Numeroelenco == numeroElencoGiocatore2);
+
+            // Controlla che entrambi i giocatori esistano
+            if (giocatore1 == null || giocatore2 == null)
+            {
+                MessageBox.Show("Uno o entrambi i giocatori non sono stati trovati.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Ripulisce il grafico prima di aggiungere nuove serie
+            chartConfrontoGiocatori.Series.Clear();
+            chartConfrontoGiocatori.Titles.Clear();
+            chartConfrontoGiocatori.Titles.Add("Confronto Statistiche Giocatori");
+
+            // Aggiungi serie per ciascun giocatore
+            Series serieGiocatore1 = new Series(giocatore1.Nomegiocatore);
+            Series serieGiocatore2 = new Series(giocatore2.Nomegiocatore);
+
+            // Imposta il tipo di grafico a barre
+            serieGiocatore1.ChartType = SeriesChartType.Bar;
+            serieGiocatore2.ChartType = SeriesChartType.Bar;
+
+            // Aggiungi i dati del giocatore 1
+            serieGiocatore1.Points.AddXY("Gol Fatti", giocatore1.Gol);
+            serieGiocatore1.Points.AddXY("Partite Giocate", giocatore1.Partitegiocate);
+            serieGiocatore1.Points.AddXY("Partite da Titolare", giocatore1.Partitegiocatetit);
+
+            // Aggiungi i dati del giocatore 2
+            serieGiocatore2.Points.AddXY("Gol Fatti", giocatore2.Gol);
+            serieGiocatore2.Points.AddXY("Partite Giocate", giocatore2.Partitegiocate);
+            serieGiocatore2.Points.AddXY("Partite da Titolare", giocatore2.Partitegiocatetit);
+
+            // Aggiungi le serie al grafico
+            chartConfrontoGiocatori.Series.Add(serieGiocatore1);
+            chartConfrontoGiocatori.Series.Add(serieGiocatore2);
+
+            // Imposta le proprietà del grafico per una migliore visualizzazione
+            chartConfrontoGiocatori.ChartAreas[0].AxisX.Title = "Statistiche";
+            chartConfrontoGiocatori.ChartAreas[0].AxisY.Title = "Valore";
+            chartConfrontoGiocatori.ChartAreas[0].RecalculateAxesScale();
+        }
+
 
         private void listView1_ColumnClick(object sender, ColumnClickEventArgs ordinaeriordinacolonna)
         {
@@ -736,6 +785,25 @@ namespace Open_data
                     MessageBox.Show($"Errore nel caricamento dell'immagine: {ex.Message}");
                 }
             }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            int numeroElencoGiocatore1, numeroElencoGiocatore2;
+
+            if (!int.TryParse(textBox3.Text, out numeroElencoGiocatore1))
+            {
+                MessageBox.Show("Il valore inserito per il giocatore 1 non è valido. Inserisci un numero intero.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            if (!int.TryParse(textBox4.Text, out numeroElencoGiocatore2))
+            {
+                MessageBox.Show("Il valore inserito per il giocatore 2 non è valido. Inserisci un numero intero.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            ConfrontaGiocatori(numeroElencoGiocatore1, numeroElencoGiocatore2);
+            chartConfrontoGiocatori.Visible = true;
+
         }
     }
 }

@@ -15,7 +15,6 @@ namespace Open_data
         private string fileName = "Elenco.csv"; // Il path del file caricato
         private string fileNazioni = "Elenco nazioni.csv"; // Il path del file caricato
         private List<nazionalita> listNazionalita;
-
         private bool isNazionalitaAscending = true;
         private bool isPosizioneAscending = true;
         private bool isSquadraAscending = true;
@@ -55,6 +54,7 @@ namespace Open_data
             PopolaComboBoxCampionato();
             PopolaComboBoxSquadre(comboBox2.Text);
         }
+
         private void ListView1_ItemActivate(object sender, EventArgs e)
         {
             // Verifica se c'è un elemento selezionato
@@ -219,6 +219,51 @@ namespace Open_data
                 MessageBox.Show("Errore nella lettura del file CSV: " + ex.Message);
             }
         }
+        private void AggiornaFiltri()
+        {
+            // Ottieni i valori selezionati dai filtri
+            string nazionalitaSelezionata = comboBox1.SelectedItem?.ToString() ?? "Tutte";
+            string campionatoSelezionato = comboBox2.SelectedItem?.ToString() ?? "Tutti";
+            string squadraSelezionata = comboBox3.SelectedItem?.ToString() ?? "Tutte";
+
+            // Recupera il numero minimo di gol se specificato
+            int golMinimi = 0;
+            if (!string.IsNullOrEmpty(textBox2.Text) && !int.TryParse(textBox2.Text, out golMinimi))
+            {
+                MessageBox.Show("Inserisci un numero intero valido per i gol.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Filtra i giocatori in base ai criteri selezionati
+            var giocatoriFiltrati = listGiocatori.Where(g =>
+                (nazionalitaSelezionata == "Tutte" || g.Nazionalita == nazionalitaSelezionata) &&
+                (campionatoSelezionato == "Tutti" || g.Campionato == campionatoSelezionato) &&
+                (squadraSelezionata == "Tutte" || g.Squadra == squadraSelezionata) &&
+                (golMinimi == 0 || g.Gol >= golMinimi)
+            ).ToList();
+
+            // Aggiorna la ListView con i giocatori filtrati
+            listView1.Items.Clear();
+            foreach (var giocatore in giocatoriFiltrati)
+            {
+                ListViewItem item = new ListViewItem(giocatore.Numeroelenco.ToString());
+                item.SubItems.Add(giocatore.Nomegiocatore);
+                item.SubItems.Add(giocatore.Nazionalita);
+                item.SubItems.Add(giocatore.Posizione);
+                item.SubItems.Add(giocatore.Squadra);
+                item.SubItems.Add(giocatore.Campionato);
+                item.SubItems.Add(giocatore.Eta.ToString());
+                item.SubItems.Add(giocatore.Annodinascita.ToString());
+                item.SubItems.Add(giocatore.Partitegiocate.ToString());
+                item.SubItems.Add(giocatore.Partitegiocatetit.ToString());
+                item.SubItems.Add(giocatore.Minutigiocati.ToString());
+                item.SubItems.Add(giocatore.Partitegiocatesunov.ToString());
+                item.SubItems.Add(giocatore.Gol.ToString());
+
+                listView1.Items.Add(item);
+            }
+        }
+
 
 
         private void CaricaGiocatorinellalistview()
@@ -653,37 +698,43 @@ namespace Open_data
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
+            AggiornaFiltri();
             string campionatoSelezionato = comboBox2.SelectedItem.ToString();
             PopolaComboBoxSquadre(campionatoSelezionato);
         }
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
+            AggiornaFiltri();
             string campionatoSelezionato = comboBox2.SelectedItem.ToString(); 
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            AggiornaFiltri();
             string abbtre=comboBox1.SelectedItem.ToString();
             string abbdue="";
-            foreach (var nazionalita in listNazionalita)
+            if (abbtre.Length == 3)
             {
-                if (abbtre==nazionalita.Abbreviazionetre)
+                foreach (var nazionalita in listNazionalita)
                 {
-                    abbdue=nazionalita.Abbreviazionedue;
+                    if (abbtre == nazionalita.Abbreviazionetre)
+                    {
+                        abbdue = nazionalita.Abbreviazionedue;
+                    }
                 }
-            }
-            nazionalita selectedNazionalita = new nazionalita(abbtre,abbdue);
-            string percorsoBandiera = $"{selectedNazionalita.PercorsoBandiera()}"; // Assicurati di avere l'immagine nella directory corretta
+                nazionalita selectedNazionalita = new nazionalita(abbtre, abbdue);
+                string percorsoBandiera = $"{selectedNazionalita.PercorsoBandiera()}"; // Assicurati di avere l'immagine nella directory corretta
 
-            try
-            {
-                // Carica l'immagine nella PictureBox
-                pictureBox1.Image = Image.FromFile(percorsoBandiera);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Errore nel caricamento dell'immagine: {ex.Message}");
+                try
+                {
+                    // Carica l'immagine nella PictureBox
+                    pictureBox1.Image = Image.FromFile(percorsoBandiera);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Errore nel caricamento dell'immagine: {ex.Message}");
+                }
             }
         }
     }

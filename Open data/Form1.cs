@@ -13,16 +13,14 @@ namespace Open_data
     public partial class Form1 : Form
     {
         private List<giocatore> listGiocatori;
-        private List<giocatore> listGiocatoriOriginale; // Lista per memorizzare l'ordine originale
-        private string fileName = "Elenco.csv"; // Il path del file caricato
-        private string fileNazioni = "Elenco nazioni.csv"; // Il path del file caricato
+        private List<giocatore> listGiocatoriOriginale; 
+        private string fileName = "Elenco.csv"; 
+        private string fileNazioni = "Elenco nazioni.csv"; 
         private List<nazionalita> listNazionalita;
-        private bool isNazionalitaAscending = true;
+        private bool isNazionalitaAscending = true; //Variabili necessarie per gli ordinamenti (true crescente -- false decrescente)
         private bool isPosizioneAscending = true;
         private bool isSquadraAscending = true;
         private bool isCampionatoAscending = true;
-
-        // Aggiunta variabili per le nuove colonne
         private bool isEtaAscending = true;
         private bool isAnnoNascitaAscending = true;
         private bool isPartiteGiocateAscending = true;
@@ -30,24 +28,22 @@ namespace Open_data
         private bool isMinutiGiocatiAscending = true;
         private bool isMinutiSu90Ascending = true;
         private bool isGolAscending = true;
-
-        // Aggiunta variabili per "Numero Elenco" e "Nome Giocatore"
         private bool isNumeroElencoAscending = true;
         private bool isNomeGiocatoreAscending = true;
 
         public Form1()
         {
             InitializeComponent();
-            listView1.ColumnClick += listView1_ColumnClick; // Associa l'evento
-            listView1.ItemActivate += ListView1_ItemActivate;
-            listView1.FullRowSelect = true;
-            chartConfrontoGiocatori.Visible = false;
+            listView1.ColumnClick += listView1_ColumnClick; // Associa l'evento del click della colonna
+            listView1.ItemActivate += ListView1_ItemActivate; // Associa l'evento dell'attivamento di un item della listview
+            listView1.FullRowSelect = true; // Garantisce la possibilità di selezionare righe intere
+            chartConfrontoGiocatori.Visible = false; // Nasconde il grafico
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            listGiocatori = new List<giocatore>();
-            listGiocatoriOriginale = new List<giocatore>(); // Inizializza la lista per l'ordine originale
+            listGiocatori = new List<giocatore>(); //Inizializza le liste di giocatori
+            listGiocatoriOriginale = new List<giocatore>(); 
             listNazionalita = new List<nazionalita>();
 
             CaricaGiocatoriDaCSV();
@@ -66,13 +62,13 @@ namespace Open_data
                 // Ottieni l'elemento selezionato
                 var selectedItem = listView1.SelectedItems[0];
 
-                // Il nome del giocatore è nella seconda colonna (indice 1)
+                // Seleziona nome giocatore (colonna 2)
                 string playerName = selectedItem.SubItems[1].Text;
 
                 // Costruisci l'URL per la pagina Wikipedia del giocatore
                 string wikipediaUrl = $"https://en.wikipedia.org/wiki/{playerName.Replace(" ", "_")}";
 
-                // Usa Process.Start per aprire l'URL nel browser predefinito
+                // Usa Process.Start per aprire l'URL
                 Process.Start(new ProcessStartInfo
                 {
                     FileName = wikipediaUrl,
@@ -84,7 +80,7 @@ namespace Open_data
 
         private void PopolaComboBoxNazionalita()
         {
-            // Estrai tutte le nazionalità dalla lista dei giocatori
+            // Estrai tutte le nazionalità dalla lista dei giocatori (Distinct per evitare duplicati) (Orderby per ordinarli in maniera alfabetica)
             var nazionalita = listGiocatori.Select(g => g.Nazionalita).Distinct().OrderBy(n => n).ToList();
 
             // Aggiungi un'opzione "Tutte" per visualizzare tutti i giocatori
@@ -101,10 +97,10 @@ namespace Open_data
             // Estrai tutte le squadre dal campionato selezionato
             var squadre = listGiocatori
                 .Where(g => g.Campionato == campionatoSelezionato) // Filtra per campionato
-                .Select(g => g.Squadra)
-                .Distinct()
-                .OrderBy(s => s)
-                .ToList();
+                .Select(g => g.Squadra) //Seleziona il campo "squadra"
+                .Distinct() //Senza doppioni
+                .OrderBy(s => s) //Ordine alfabetico
+                .ToList(); //In una lista
 
             // Pulisci il ComboBox prima di aggiungere nuovi elementi
             comboBox3.Items.Clear();
@@ -211,7 +207,6 @@ namespace Open_data
                         }
                         else
                         {
-                            // Opzionale: registrare o visualizzare un avviso per le righe incomplete
                             Console.WriteLine($"Riga incompleta ignorata: {line}");
                         }
                     }
@@ -358,7 +353,7 @@ namespace Open_data
         {
             if (ordinaeriordinacolonna.Column == 0) // Indice della colonna "Numero Elenco"
             {
-                if (isNumeroElencoAscending)
+                if (isNumeroElencoAscending) //Inizializzata come true quindi ordine crecente
                 {
                     listGiocatori.Sort((x, y) => x.Numeroelenco.CompareTo(y.Numeroelenco));
                 }
@@ -366,7 +361,7 @@ namespace Open_data
                 {
                     listGiocatori.Sort((x, y) => y.Numeroelenco.CompareTo(x.Numeroelenco));
                 }
-                isNumeroElencoAscending = !isNumeroElencoAscending;
+                isNumeroElencoAscending = !isNumeroElencoAscending; //Portata a false quindi ordine decrescente
             }
             else if (ordinaeriordinacolonna.Column == 1) // Indice della colonna "Nome Giocatore"
             {
@@ -767,7 +762,7 @@ namespace Open_data
             {
                 foreach (var nazionalita in listNazionalita)
                 {
-                    if (abbtre == nazionalita.Abbreviazionetre)
+                    if (abbtre == nazionalita.Abbreviazionetre) //Se coincide l'abbreviazazione a tre lettere, assegno alla nazione due il corrrispondente nel file della nazionalità a due lettere
                     {
                         abbdue = nazionalita.Abbreviazionedue;
                     }

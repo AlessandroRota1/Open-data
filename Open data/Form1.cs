@@ -790,6 +790,10 @@ namespace Open_data
                     MessageBox.Show($"Errore nel caricamento dell'immagine: {ex.Message}");
                 }
             }
+            else
+            {
+                pictureBox1.Image = null;
+            }
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -800,15 +804,15 @@ namespace Open_data
             {
                 MessageBox.Show("Il valore inserito per il giocatore 1 non è valido. Inserisci un numero intero.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-
-            if (!int.TryParse(textBox4.Text, out numeroElencoGiocatore2))
+            else if (!int.TryParse(textBox4.Text, out numeroElencoGiocatore2))
             {
                 MessageBox.Show("Il valore inserito per il giocatore 2 non è valido. Inserisci un numero intero.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-
-            ConfrontaGiocatori(numeroElencoGiocatore1, numeroElencoGiocatore2);
-            chartConfrontoGiocatori.Visible = true;
-
+            else
+            {
+                ConfrontaGiocatori(numeroElencoGiocatore1, numeroElencoGiocatore2);
+                chartConfrontoGiocatori.Visible = true;
+            }
         }
     }
 }

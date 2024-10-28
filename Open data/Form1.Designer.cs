@@ -56,6 +56,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.button7 = new System.Windows.Forms.Button();
+            this.Progress = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartConfrontoGiocatori)).BeginInit();
             this.SuspendLayout();
@@ -294,6 +295,15 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
+            // Progress
+            // 
+            this.Progress.Location = new System.Drawing.Point(12, 539);
+            this.Progress.Name = "Progress";
+            this.Progress.Size = new System.Drawing.Size(930, 36);
+            this.Progress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.Progress.TabIndex = 25;
+            this.Progress.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -324,6 +334,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.listView1);
+            this.Controls.Add(this.Progress);
             this.Name = "Form1";
             this.Text = "Elenco giocatori top 5 campionati europei - Annata 2021/22";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -361,6 +372,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.ProgressBar Progress;
     }
 }
 

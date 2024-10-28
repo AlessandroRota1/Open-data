@@ -52,6 +52,7 @@ namespace Open_data
             PopolaComboBoxNazionalita();
             PopolaComboBoxCampionato();
             PopolaComboBoxSquadre(comboBox2.Text);
+
         }
 
         private void ListView1_ItemActivate(object sender, EventArgs e)
@@ -283,6 +284,9 @@ namespace Open_data
             listView1.Columns.Add("Gol", 50);
             listView1.Items.Clear(); // Azzera gli item esistenti
 
+            Progress.Maximum = listGiocatori.Count;
+            Progress.Value = 0;
+
             foreach (var giocatore in listGiocatori)
             {
                 ListViewItem item = new ListViewItem(giocatore.Numeroelenco.ToString());
@@ -300,7 +304,11 @@ namespace Open_data
                 item.SubItems.Add(giocatore.Gol.ToString());
 
                 listView1.Items.Add(item);
+
+                Progress.Value += 1;
             }
+
+            Progress.Visible = false;
         }
         public void ConfrontaGiocatori(int numeroElencoGiocatore1, int numeroElencoGiocatore2)
         {
@@ -513,6 +521,8 @@ namespace Open_data
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Progress.Visible = true;
+
             // Ordina i giocatori in base al Numeroelenco in maniera crescente
             listGiocatori.Sort((x, y) => x.Numeroelenco.CompareTo(y.Numeroelenco));
 

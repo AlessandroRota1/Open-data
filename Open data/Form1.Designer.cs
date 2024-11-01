@@ -97,6 +97,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 3;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // button2
             // 
@@ -142,6 +143,7 @@
             this.comboBox1.Size = new System.Drawing.Size(128, 21);
             this.comboBox1.TabIndex = 8;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.comboBox1.TextUpdate += new System.EventHandler(this.comboBoxNazionalita_TextUpdate);
             // 
             // label3
             // 

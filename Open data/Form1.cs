@@ -13,9 +13,9 @@ namespace Open_data
     public partial class Form1 : Form
     {
         private List<giocatore> listGiocatori;
-        private List<giocatore> listGiocatoriOriginale; 
-        private string fileName = "Elenco.csv"; 
-        private string fileNazioni = "Elenco nazioni.csv"; 
+        private List<giocatore> listGiocatoriOriginale;
+        private string fileName = "Elenco.csv";
+        private string fileNazioni = "Elenco nazioni.csv";
         private List<nazionalita> listNazionalita;
         private bool isNazionalitaAscending = true; //Variabili necessarie per gli ordinamenti (true crescente -- false decrescente)
         private bool isPosizioneAscending = true;
@@ -43,16 +43,15 @@ namespace Open_data
         private void Form1_Load(object sender, EventArgs e)
         {
             listGiocatori = new List<giocatore>(); //Inizializza le liste di giocatori
-            listGiocatoriOriginale = new List<giocatore>(); 
+            listGiocatoriOriginale = new List<giocatore>();
             listNazionalita = new List<nazionalita>();
-
+            textBox1.TextChanged += textBox1_TextChanged;
             CaricaGiocatoriDaCSV();
             CaricaNazioniDaCSV();
             CaricaGiocatorinellalistview();
             PopolaComboBoxNazionalita();
             PopolaComboBoxCampionato();
             PopolaComboBoxSquadre(comboBox2.Text);
-
         }
 
         private void ListView1_ItemActivate(object sender, EventArgs e)
@@ -77,6 +76,42 @@ namespace Open_data
                 });
             }
         }
+        private void FiltraGiocatori()
+        {
+            string testoRicerca = textBox1.Text.Trim().ToLower();
+
+            // Filtra la lista di giocatori in base al nome
+            var giocatoriFiltrati = listGiocatori
+                .Where(g => g.Nomegiocatore.ToLower().Contains(testoRicerca))
+                .ToList();
+
+            // Aggiorna la ListView con i giocatori filtrati
+            AggiornaListView(giocatoriFiltrati);
+        }
+        private void AggiornaListView(List<giocatore> giocatori)
+        {
+            listView1.Items.Clear();
+
+            foreach (var g in giocatori)
+            {
+                var item = new ListViewItem(g.Numeroelenco.ToString());
+                item.SubItems.Add(g.Nomegiocatore);
+                item.SubItems.Add(g.Nazionalita);
+                item.SubItems.Add(g.Posizione);
+                item.SubItems.Add(g.Squadra);
+                item.SubItems.Add(g.Campionato);
+                item.SubItems.Add(g.Eta.ToString());
+                item.SubItems.Add(g.Annodinascita.ToString());
+                item.SubItems.Add(g.Partitegiocate.ToString());
+                item.SubItems.Add(g.Partitegiocatetit.ToString());
+                item.SubItems.Add(g.Minutigiocati.ToString());
+                item.SubItems.Add(g.Partitegiocatesunov.ToString("F2"));
+                item.SubItems.Add(g.Gol.ToString());
+
+                listView1.Items.Add(item);
+            }
+        }
+
 
 
         private void PopolaComboBoxNazionalita()
@@ -534,7 +569,7 @@ namespace Open_data
         {
             string nomeGiocatoreDaCercare = textBox1.Text;
 
-            if (nomeGiocatoreDaCercare=="")
+            if (nomeGiocatoreDaCercare == "")
             {
                 MessageBox.Show("Inserisci il nome di un giocatore.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -572,7 +607,7 @@ namespace Open_data
         private void button3_Click(object sender, EventArgs e)
         {
             // Controlla se l'input è vuoto
-            if (textBox2.Text=="")
+            if (textBox2.Text == "")
             {
                 MessageBox.Show("Inserisci un numero valido di gol.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -760,14 +795,14 @@ namespace Open_data
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
             AggiornaFiltri();
-            string campionatoSelezionato = comboBox2.SelectedItem.ToString(); 
+            string campionatoSelezionato = comboBox2.SelectedItem.ToString();
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             AggiornaFiltri();
-            string abbtre=comboBox1.SelectedItem.ToString();
-            string abbdue="";
+            string abbtre = comboBox1.SelectedItem.ToString();
+            string abbdue = "";
             if (abbtre.Length == 3)
             {
                 foreach (var nazionalita in listNazionalita)
@@ -814,11 +849,20 @@ namespace Open_data
                 chartConfrontoGiocatori.Visible = true;
             }
         }
+
+        private void comboBoxNazionalita_TextUpdate(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            FiltraGiocatori();
+        }
     }
-}
 
 
-public class giocatore
+    public class giocatore
     {
         public int Numeroelenco { get; set; }
         public string Nomegiocatore { get; set; }
@@ -851,20 +895,21 @@ public class giocatore
             Gol = gol;
         }
     }
-        public class nazionalita
+    public class nazionalita
+    {
+        public string Abbreviazionetre { get; set; }
+        public string Abbreviazionedue { get; set; }
+        public nazionalita(string abbreviazionetre, string abbreviazionedue)
         {
-            public string Abbreviazionetre { get; set; }
-            public string Abbreviazionedue { get; set; }
-                public nazionalita(string abbreviazionetre, string abbreviazionedue)
-                {
-                    Abbreviazionetre = abbreviazionetre;
-                    Abbreviazionedue= abbreviazionedue;
-                }
+            Abbreviazionetre = abbreviazionetre;
+            Abbreviazionedue = abbreviazionedue;
+        }
         public string PercorsoBandiera()
         {
-            return $"{Abbreviazionedue.ToLower()}.png"; 
+            return $"{Abbreviazionedue.ToLower()}.png";
         }
 
+    }
 }
 
 

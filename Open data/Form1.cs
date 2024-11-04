@@ -42,6 +42,7 @@ namespace Open_data
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            button8.Visible = false;
             listGiocatori = new List<giocatore>(); //Inizializza le liste di giocatori
             listGiocatoriOriginale = new List<giocatore>();
             listNazionalita = new List<nazionalita>();
@@ -563,6 +564,10 @@ namespace Open_data
 
             // Ricarica la ListView con l'ordine per Numeroelenco crescente
             CaricaGiocatorinellalistview();
+            comboBox1.SelectedIndex = 0;
+            comboBox2.SelectedIndex = 0;
+            comboBox3.SelectedIndex = 0;
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -622,7 +627,6 @@ namespace Open_data
 
             // Filtra i giocatori con un numero di gol maggiore del valore inserito
             var giocatoriFiltrati = listGiocatori.Where(g => g.Gol >= golMinimi).ToList();
-
             // Controlla se sono stati trovati giocatori che soddisfano i criteri
             if (giocatoriFiltrati.Count == 0)
             {
@@ -650,6 +654,7 @@ namespace Open_data
 
                 listView1.Items.Add(item);
             }
+            textBox2.Clear();
 
         }
 
@@ -847,6 +852,7 @@ namespace Open_data
             {
                 ConfrontaGiocatori(numeroElencoGiocatore1, numeroElencoGiocatore2);
                 chartConfrontoGiocatori.Visible = true;
+                button8.Visible = true;
             }
         }
 
@@ -858,6 +864,12 @@ namespace Open_data
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             FiltraGiocatori();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            button8.Visible = false;
+            chartConfrontoGiocatori.Visible = false;
         }
     }
 

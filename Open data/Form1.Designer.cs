@@ -57,6 +57,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.button7 = new System.Windows.Forms.Button();
             this.Progress = new System.Windows.Forms.ProgressBar();
+            this.button8 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartConfrontoGiocatori)).BeginInit();
             this.SuspendLayout();
@@ -245,13 +246,13 @@
             this.chartConfrontoGiocatori.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chartConfrontoGiocatori.Legends.Add(legend1);
-            this.chartConfrontoGiocatori.Location = new System.Drawing.Point(1300, 262);
+            this.chartConfrontoGiocatori.Location = new System.Drawing.Point(14, 9);
             this.chartConfrontoGiocatori.Name = "chartConfrontoGiocatori";
             series1.ChartArea = "ChartArea1";
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chartConfrontoGiocatori.Series.Add(series1);
-            this.chartConfrontoGiocatori.Size = new System.Drawing.Size(372, 259);
+            this.chartConfrontoGiocatori.Size = new System.Drawing.Size(1403, 621);
             this.chartConfrontoGiocatori.TabIndex = 19;
             this.chartConfrontoGiocatori.Text = "chart1";
             // 
@@ -306,17 +307,28 @@
             this.Progress.TabIndex = 25;
             this.Progress.Visible = false;
             // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(1310, 40);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(73, 49);
+            this.button8.TabIndex = 26;
+            this.button8.Text = "Esci:";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1684, 661);
+            this.ClientSize = new System.Drawing.Size(1429, 661);
+            this.Controls.Add(this.chartConfrontoGiocatori);
+            this.Controls.Add(this.button8);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.textBox4);
             this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.chartConfrontoGiocatori);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button6);
@@ -375,6 +387,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.ProgressBar Progress;
+        private System.Windows.Forms.Button button8;
     }
 }
 

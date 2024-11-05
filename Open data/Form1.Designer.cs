@@ -246,13 +246,13 @@
             this.chartConfrontoGiocatori.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chartConfrontoGiocatori.Legends.Add(legend1);
-            this.chartConfrontoGiocatori.Location = new System.Drawing.Point(14, 9);
+            this.chartConfrontoGiocatori.Location = new System.Drawing.Point(-3, 12);
             this.chartConfrontoGiocatori.Name = "chartConfrontoGiocatori";
             series1.ChartArea = "ChartArea1";
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chartConfrontoGiocatori.Series.Add(series1);
-            this.chartConfrontoGiocatori.Size = new System.Drawing.Size(1403, 621);
+            this.chartConfrontoGiocatori.Size = new System.Drawing.Size(1307, 621);
             this.chartConfrontoGiocatori.TabIndex = 19;
             this.chartConfrontoGiocatori.Text = "chart1";
             // 
